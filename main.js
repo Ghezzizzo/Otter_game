@@ -1,15 +1,16 @@
-
+const section = document.createElement('div');
+document.body.appendChild(section);
 
 // button +
 const newDiv = document.createElement('button');
 const plus = document.createTextNode('+');
-document.body.appendChild(newDiv);
+section.appendChild(newDiv);
 newDiv.appendChild(plus);
 
 // button -
 const newDiv2 = document.createElement('button');
 const minus = document.createTextNode('-');
-document.body.appendChild(newDiv2);
+section.appendChild(newDiv2);
 newDiv2.appendChild(minus);
 
 //number
