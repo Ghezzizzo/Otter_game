@@ -13,10 +13,11 @@ body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  background-color: #f9f9f9;
 }
 
 .para {
-  height: 33vh;
+  min-height: 33vh;
   display: flex;
   flex-direction: column-reverse;
   justify-content: center;
@@ -35,12 +36,21 @@ body {
   flex-direction: column;
 }
 
+#btnContainer {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 button {
   background-color: coral;
   border: none;
   padding: 0.5rem 2rem;
-  font-size: 2rem;
+  font-size: 1rem;
   border-radius: 15px;
+}
+
+.btnContainer button {
+  font-size: 2rem;
 }
 
 button:hover {
@@ -52,7 +62,37 @@ button:active {
   background-color: brown;
 }
 
+button:disabled {
+  background-color: white;
+}
+
 .number {
   font-weight: 300;
   font-size: 10rem;
+}
+
+.card {
+  height: 140px;
+  width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column-reverse;
+  margin: 1rem;
+  border: 1px solid black;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.card p {
+  padding-bottom: 1rem;
+  text-align: center;
+}
+
+#endGame {
+  display: flex;
+  font-size: 2rem;
+  text-align: center;
+  flex-direction: column;
+  max-width: 800px;
 }
