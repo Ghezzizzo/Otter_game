@@ -1,0 +1,14 @@
+creare un counter di Lontre nel mondo.
+
+- come aumentare il numero di lontre
+    - con il tasto '+' per far comparire una nuova lontra
+    - accoppiamento (incrementa il numero di 1 al secondo)
+    - estingui un suo predatore naturale (incrementa il numero di 3 al secondo)
+    - l'allevatore di lontre (incrementa il numero di 5 al secondo)
+    - //nuovo ramo genetico che aumenta il numero della prole
+
+- come diminuire il numero di lontre
+    - con il tasto '-' per far scomparire una lontra
+    - il cacciatore di lontre (incrementa il numero di 2 al secondo)
+    - estingui un suo predatore naturale (diminuisci il numero di 3 al secondo)
+    - malattia rara che ne diminuisce il numero per un tot di tempo.

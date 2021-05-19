@@ -1,36 +1,76 @@
-let time = 50;
-let showButton = false;
-let helpActive = false;
-let error = false;
-let angry = 0;
-let containers = 3;
+// INIT //
 
+// variables
+let state = 0;
+let containers = 3;
+let numberOfBtn = 1;
+let matchNumber = 0; 
+let newChild = 10;
+let child = 1;
+let predator = 0;
+let removePredator = 50;
+let hunters = 0;
+let removeHuner = 10;
+let time = 10;
+let firstHunt = true;
+let huntSeason = false;
+let highRisk = 30;
+
+// arrays
+let cards = [
+    'aumenta la prole',
+    'allevatore',
+    'caccia proibita'
+]
+
+let cardsDesc = [
+    'Aumenta il numero di piccoli ad ogni accoppiamento',
+    'Un aiuto per aiutarti ad auitarti nel tuo gravoso compito',
+    'Emetti un divieto di caccia'
+]
+
+let sentences = [
+    'Non ci sono lontre nel mondo',
+    'Sono comparse delle lontre nel mondo',
+    'I primi esemplari ormai si stanno abituando all\'habitat lacustre...',
+    'siamo arrivati all\'equivalente della popolazione italiana... e continuano ad aumentare! GRANDE!'
+]
+
+// create a page division
 for (let i = 0; i < containers; i++) {
     let paragraph = document.createElement('div');
     document.body.appendChild(paragraph);
     paragraph.classList.add("para");
 }
 
+let numContainer = document.getElementsByClassName('para')[0];
+let txtContainer = document.getElementsByClassName('para')[1];
 let btnContainer = document.getElementsByClassName('para')[2];
-let numContainer = document.getElementsByClassName('para')[1];
-let helpContainer = document.getElementsByClassName('para')[0];
 
-helpContainer.setAttribute('id','helpContainer');
+// create upgrades cards
+for (let i = 0; i < cards.length; i++) {
+    let card = document.createElement('div');
+    btnContainer.appendChild(card);
+    card.classList.add("card");
+    createBtn(cards[i]);
+    createDesc(cardsDesc[i],cards[i],btnContainer);
+    document.getElementById(cards[i]).disabled = true;
+}
 
-// buttons container
-const section = document.createElement('div');
-document.body.appendChild(section);
+const simpleBtnContainer = document.createElement('div');
+numContainer.appendChild(simpleBtnContainer);
+simpleBtnContainer.classList.add("btnContainer");
 
 // button +
 const btn1 = document.createElement('button');
 const plus = document.createTextNode('+');
-btnContainer.appendChild(btn1);
+simpleBtnContainer.appendChild(btn1);
 btn1.appendChild(plus);
 
 // button -
 const btn2 = document.createElement('button');
 const minus = document.createTextNode('-');
-btnContainer.appendChild(btn2);
+simpleBtnContainer.appendChild(btn2);
 btn2.appendChild(minus);
 
 // number
@@ -40,122 +80,133 @@ numContainer.appendChild(paragraph);
 paragraph.appendChild(number);
 paragraph.classList.add("number");
 
-// help button
-const helpButton = document.createElement('button');
-let bot = document.createTextNode('Ti serve aiuto?');
-
-// reset button
-const resetButton = document.createElement('button');
-let reset = document.createTextNode('Reset');
-
-// dialogue paragraph
-const dialogue = document.createElement('p');
-dialogue.classList.add("dialogue");
+// text
+const textEl = document.createElement('p');
+const text = document.createTextNode(sentences[0]);
+txtContainer.appendChild(textEl);
+textEl.appendChild(text);
 
 // buttons action
 btn1.addEventListener('click',add);
 btn2.addEventListener('click',remove);
-helpButton.addEventListener('click',automation);
-resetButton.addEventListener('click',retry);
 
-// functions
+
+// FUNCTIONS //
+
 function add() {
-   number.textContent++;
-   if (number.textContent >= 20 && showButton == false) {
-   createHelpButton();
-   }
-   mistake();
+    number.textContent = Number(number.textContent) + child;
 }
 
 function remove() {
     if (number.textContent > 0) {
         number.textContent--;
+    } 
+}
+
+function createBtn(name) {
+    let btn = document.createElement('button');
+    btnContainer.appendChild(btn);
+    btn.appendChild(document.createTextNode(name));
+    btn.setAttribute('id',name);
+}
+
+function createDesc(description,id,position) {
+    let p = document.createElement('p');
+    position.appendChild(p);
+    p.appendChild(document.createTextNode(description));
+    p.setAttribute('id',id);
+}
+
+function moreChild() {
+    child++;
+    document.getElementById(cards[0]).disabled = true;
+    newChild = newChild * 10;
+}
+
+function lostPredator() {
+    predator--;
+    document.getElementById(cards[1]).disabled = true;
+    removePredator = removePredator * 8;
+}
+
+function predatorInAction() {
+    number.textContent = Number(number.textContent) - predator * 4;
+}
+
+function hunting() {
+    number.textContent = Number(number.textContent) - hunters * 10;
+}
+
+function noHunting() {
+    huntSeason = false;
+    time = 60;
+    hunters = 0;
+}
+
+function hunterCounter() {
+    if (time > 0) {
+        time--;
+        if (firstHunt == false) {
+            document.getElementById(cards[2]).disabled = true;  
+            document.getElementById('huntDesc').textContent = 'divieto di caccia';  
+        }
+
     } else {
-        alert('ma scusami... come puoi contare qualcosa di negativo?');
-    }
-    mistake();
+        huntSeason = true;
+        hunters = 1;
+        if (firstHunt == true) {
+            firstHunt = false;
+            createDesc('I cacciatori sono entrati in azione','huntDesc',txtContainer);
+        } else {
+            document.getElementById('huntDesc').textContent = 'I cacciatori sono entrati in azione';
+        }
+        
+    }  
 }
 
-function automation() {
-    if (helpActive == false) {
-        number.textContent++;
-        helpActive = true;
-        angry = 1;
-        bot.textContent = 'ferma!';
-        console.log('attivo');
-        btn1.removeEventListener('click',add);
-        btn2.removeEventListener('click',remove);
-    } else {
-        helpActive = false;
-        angry = 0;
-        bot.textContent = 'Ti serve aiuto?';
-        console.log('inattivo');
-        btn1.addEventListener('click',add);
-        btn2.addEventListener('click',remove);
+function demon() {
+    if (number.textContent == 0) {
+        text.textContent = sentences[0];
+    } else if (number.textContent >= 1 && number.textContent < 100) {
+        text.textContent = sentences[1];
+    } else if (number.textContent >= 100 && number.textContent < 600) {
+        text.textContent = sentences[2];
+    } else if (number.textContent >= 600 && number.textContent < 1200) {
+        text.textContent = sentences[3];
     }
-}
 
-function createHelpButton() {
-    helpContainer.appendChild(helpButton);
-    helpButton.appendChild(bot);
-    showButton = true;
-}
-
-function tooFast() {
-    if (number.textContent == 46 && helpActive == true) {
-        retry();
+    if (number.textContent > newChild) {
+        let btn = document.getElementById(cards[0]);
+        btn.disabled = false;
+        btn.addEventListener('click',moreChild);
     }
-}
 
-function mistake() {
-    if (number.textContent == 49 && error == false) {
-        number.textContent = 52;
-        alert('aspetta... qualcosa non va...');
-        console.log('è arrivato a 49');
-    } else if (number.textContent == 51 && error == false) {
-        number.textContent = 48;
-        console.log('è arrivato a 51');
-        alert('aspetta... qualcosa non va...');
-    } else if (number.textContent == 40  && error == false && angry == 0) {
-        noMercy();
+    if (number.textContent > removePredator) {
+        let btn = document.getElementById(cards[1]);
+        btn.disabled = false;
+        btn.addEventListener('click',lostPredator);
     }
-}
 
-function retry() {
-    helpActive = false;
-    showButton = false;
-    error = true;
-    if (angry == 1) {
-        helpContainer.removeChild(helpButton);
-        btn1.addEventListener('click',add);
-        btn2.addEventListener('click',remove);
-        alert('oh merda! Sono andato troppo veloce... Devo resettare tutto');   
-    } else if (angry == 2) {
-        helpContainer.removeChild(dialogue);
-        helpContainer.removeChild(resetButton);
+    if (number.textContent < highRisk && huntSeason == true) {
+        let btn = document.getElementById(cards[2]);
+        btn.disabled = false;
+        btn.addEventListener('click',noHunting);
     }
+
     
-    number.textContent = 0;
-    bot.textContent = 'Ti serve aiuto?';
-}
 
-function noMercy() {
-    angry = 2;
-    helpContainer.removeChild(helpButton);
-    let noHelp = document.createTextNode('Ah quindi non ti serve è!? VA BENE.');
-    helpContainer.appendChild(dialogue);
-    dialogue.appendChild(noHelp);
-    dialogue.style.color = 'red';
-    dialogue.style.fontSize = '3rem';
-    dialogue.style.fontWeight = '900';
-    helpContainer.appendChild(resetButton);
-    resetButton.appendChild(reset);
 }
 
 window.setInterval(function() {
-    if (helpActive == true) {
-        add();
+    if (state == 0){
+        demon();
+        predatorInAction();
+        hunterCounter();
+        hunting();
+        if (number.textContent < 0) {
+           number.textContent = 0;
+       } 
     }
-    tooFast();
-    
-}, time) 
+
+}, 1000)
+

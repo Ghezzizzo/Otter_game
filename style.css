@@ -18,9 +18,16 @@ body {
 .para {
   height: 33vh;
   display: flex;
-  justify-content: space-around;
+  flex-direction: column-reverse;
+  justify-content: center;
   align-items: center;
   min-width: 50%;
+}
+
+.btnContainer {
+  width: 70%;
+  display: flex;
+  justify-content: space-around;
 }
 
 #helpContainer {
@@ -31,7 +38,7 @@ body {
 button {
   background-color: coral;
   border: none;
-  padding: 20px 52px;
+  padding: 0.5rem 2rem;
   font-size: 2rem;
   border-radius: 15px;
 }
@@ -47,5 +54,5 @@ button:active {
 
 .number {
   font-weight: 300;
-  font-size: 20rem;
+  font-size: 10rem;
 }
