@@ -7,15 +7,15 @@ let numberOfBtn = 1;
 let matchNumber = 0; 
 let newChild = 10;
 let child = 1;
-let predator = 0;
-let removePredator = 50;
+let breeder = 0;
+let newBreeder = 50;
 let hunters = 0;
 let removeHuner = 10;
 let time = 10;
 let firstHunt = true;
 let huntSeason = false;
 let highRisk = 30;
-let endgame = 2;
+let endgame = 0;
 let finalHottters = 0;
 let death = 0;
 
@@ -36,7 +36,7 @@ let sentences = [
     'Non ci sono lontre nel mondo',
     'Sono comparse delle lontre nel mondo',
     'I primi esemplari ormai si stanno abituando all\'habitat lacustre...',
-    'siamo arrivati all\'equivalente della popolazione italiana... e continuano ad aumentare! GRANDE!',
+    'siamo arrivati all\'equivalente della popolazione italiana... e continuano ad aumentare! GRANDE!'
 ]
 
 
@@ -98,17 +98,7 @@ btn2.addEventListener('click',remove);
 
 // FUNCTIONS //
 
-function add() {
-    number.textContent = Number(number.textContent) + child;
-}
-
-function remove() {
-    if (number.textContent > 0) {
-        number.textContent--;
-        death++;
-    } 
-}
-
+// for creation
 function createBtn(name,position) {
     let btn = document.createElement('button');
     position.appendChild(btn);
@@ -123,20 +113,32 @@ function createDesc(description,id,position) {
     p.setAttribute('id',id);
 }
 
+// buttons
+function add() {
+    number.textContent = Number(number.textContent) + child;
+}
+
+function remove() {
+    if (number.textContent > 0) {
+        number.textContent--;
+        death++;
+    } 
+}
+
 function moreChild() {
     child++;
     document.getElementById(cards[0]).disabled = true;
     newChild = newChild * 10;
 }
 
-function lostPredator() {
-    predator--;
+function addBreeder() {
+    breeder--;
     document.getElementById(cards[1]).disabled = true;
-    removePredator = removePredator * 8;
+    newBreeder = newBreeder * 8;
 }
 
-function predatorInAction() {
-    number.textContent = Number(number.textContent) - predator * 4;
+function breeding() {
+    number.textContent = Number(number.textContent) - breeder * 4;
 }
 
 function hunting() {
@@ -186,20 +188,25 @@ function final() {
 
     let finalParas = [
         'GAME OVER',
-        'Hai creato '  + finalHottters + ' lontre',
-        'Sono morte ' + death + ' lontre',
-        '\"La lontra vive solo in zone non antropizzate ed è molto sensibile all\'inquinamento. Inoltre è un\'ottima pescatrice che è entrata in competizione con l\'essere umano: questo significa che negli ultimi 2-3 secoli la convivenza non è stata per nulla facile, a discapito della lontra, che è stata molto cacciata durante il XX secolo anche per la sua pelliccia, usata per l\'abbigliamento femminile.\"'
+        'Al mondo ora si trovano '  + finalHottters + ' lontre',
+        'Sono morte ' + death + ' lontre'
+    ]
+
+    let info = [
+        '\"È una specie con areale eurasiatico (dalla penisola iberica sino al Giappone) e nordafricano (Marocco, Tunisia e Algeria). L\'attuale distribuzione in Europa è molto frammentaria e in diversi paesi (ad esempio Paesi Bassi, Liechtenstein, Svizzera) è ormai estinta mentre in altri (Italia, Francia, Belgio, Germania) è presente con popolazioni residue poco numerose e isolate. È in aumento in Svezia.\"',
+        '\"La lontra vive solo in zone non antropizzate ed è molto sensibile all\'inquinamento. Inoltre è un\'ottima pescatrice che è entrata in competizione con l\'essere umano: questo significa che negli ultimi 2-3 secoli la convivenza non è stata per nulla facile, a discapito della lontra, che è stata molto cacciata durante il XX secolo anche per la sua pelliccia, usata per l\'abbigliamento femminile.\"',
+        '\"In Italia nel 2009 è stato redatto un piano d\'azione Nazionale dal ministero dell\'ambiente per la conservazione della lontra. Due sono gli obiettivi: intende promuovere la conservazione di una specie - la lontra eurasiatica (Lutra lutra, L. 1758) -, a forte rischio di estinzione nel nostro Paese. Il secondo affronta il più vasto tema della conservazione di uno degli ecosistemi più minacciati in Europa, considerato che la lontra è considerata sia specie indicatrice della qualità ambientale degli ecosistemi d’acqua dolce, sia specie ombrello, la cui protezione favorisce cioè quella di altre specie che utilizzano gli habitat acquatici e ripariali\"'
     ]
 
     for (let i = 0; i < finalParas.length; i++) {
         createDesc(finalParas[i],'par'+i,finalDiv);
     }
+    
+    createDesc(info[ Math.floor(Math.random() * info.length)],'info',finalDiv);
+
     let par = document.getElementsByTagName('p');
     par[0].style.fontWeight = '900';
     par[0].style.fontSize = '4rem';
-    par[finalParas.length - 1].style.fontSize = '1rem';
-    par[finalParas.length - 1].style.fontStyle = 'italic';
-    par[finalParas.length - 1].style.padding = '2rem';
 
 }
 
@@ -220,10 +227,10 @@ function demon() {
         btn.addEventListener('click',moreChild);
     }
 
-    if (number.textContent > removePredator) {
+    if (number.textContent > newBreeder) {
         let btn = document.getElementById(cards[1]);
         btn.disabled = false;
-        btn.addEventListener('click',lostPredator);
+        btn.addEventListener('click',addBreeder);
     }
 
     if (number.textContent < highRisk && huntSeason == true) {
@@ -247,7 +254,7 @@ function demon() {
 
 window.setInterval(function() {
     if (state == 0){
-        predatorInAction();
+        breeding();
         hunterCounter();
         if (number.textContent > 0) {
             hunting();   
