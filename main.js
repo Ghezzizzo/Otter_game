@@ -16,20 +16,33 @@ let time = 10;
 let firstHunt = true;
 let huntSeason = false;
 let highRisk = 30;
-let endgame = 20;
+let endgame = 30; 
 let death = 0;
 let upChild = false;
 let upBreeder = false;
 let upHunting = false;
 let cardNumber = 0;
+let overPopolation = 300;
+let overKill = 250;
 let friend = '@Selly';
 let instaAri = friend.link('https://www.instagram.com/arinpuglia/');
 
 // arrays
+let archievements = [
+    'Nessuna morte',
+    'killer',
+    'estinzione',
+    'sovrapopolato',
+    'salvatore',
+    'self-made',
+    'vittoria insanguinata'
+]
+
 let explenation = [
     'stai per provare un mini-gioco in cui l\'obiettivo sarà quello di accrescere il numero di lontntre. Inizierai trovandoti un numero pari a 0 e due bottoni: il primo aumenta il numero di lontre mentre il secondo... bè il secondo le \"toglie di mezzo\" diciamo.',
     'Andando avanti, se riuscirai ad aumentarne il numero, compariranno alcuni aiuti che ti porteranno più vicino al tuo obiettivo. Ma fai attenzione! Non tutti a questo mondo vogliono salvaguardare le lontre... ',
     'Ad Ogni modo... perchè le lontre? Bè di sicuro perchè sono degli animali bellissimi e coccolosissimi (parole della mia amica ',
+    'Ho aggiunto anche alcuni obiettivi da raggiungere... ' + archievements[0]+ ', ' + archievements[1]+ ', ' + archievements[2]+ ', ' + archievements[3]+  ', ' + archievements[4]+  ', ' + archievements[5]+  ', ' + archievements[6],
     'Ma ora basta leggere... Cominciamo!',
 ]
 
@@ -76,10 +89,32 @@ let sentences = [
     'siamo arrivati all\'equivalente della popolazione italiana... e continuano ad aumentare! GRANDE!'
 ]
 
+let archIds = [
+    'archId0',
+    'archId1',
+    'archId2',
+    'archId3',
+    'archId4',
+    'archId5',
+    'archId6'
+]
+
+let archDesc = [
+    'Hai terminato il gioco senza che alcuna lontra sia morta',
+    'Hai superato la soglia di '+overKill+' lontre uccise',
+    'hai terminato il gioco senza aver lasciato alcuna lontra viva nel mondo',
+    'hai superato la soglia di '+ overPopolation +' lontre nel mondo',
+    'hai impedito ai cacciatore di fare una strage',
+    'hai terminato il gioco senza usare aiuti',
+    'hai terminato il gioco aumentando il numero di lontre... ma a che prezzo?'
+]
+
 firstDescription();
 
 function firstDescription() {
+    createDiv('otter_img','',document.body);
     createDesc('OTTER GAME', 'title', document.body);
+    
     for (let i = 0; i < explenation.length; i++) {
         createDiv('','box_rules',document.body);
         let pos = document.getElementsByClassName('box_rules')[i];
@@ -88,7 +123,7 @@ function firstDescription() {
     document.getElementById('p2').innerHTML += instaAri + ') in più sono una specie a rischio (fortunatamente non altissimo... per ora) e in forte competizione con l\'essere umano per quanto riguarda cibo e habitat. Spero che in primo luogo questo giochino ti possa far sorridere e, tra un click e l\'altro, ti possa far scoprire qualcosa in più su questo splendido animaletto.';
     createBtn('start','start',document.body);
     document.getElementById('start').addEventListener('click',startGame);
-    createDiv('otter_img','',document.body);
+    
 }
 
 function startGame() {
@@ -151,10 +186,10 @@ function createDesc(description,id,position) {
     }
 }
 
-function createDiv(name_box,class_box,position) {
+function createDiv(id_box,class_box,position) {
     let box = document.createElement('div');
-    if (name_box != '') {
-        box.id = name_box;  
+    if (id_box != '') {
+        box.id = id_box;  
     }
     if (class_box != '') {
         box.classList.add(class_box);
@@ -251,8 +286,46 @@ function hunterCounter() {
     }  
 }
 
+function createAchievent(title,archDesc,archId) {
+    let container = document.getElementById('archContainer');
+    createDiv(archId,'arch',container);
+    let box = document.getElementById(archId);
+    createDiv('','titleContainer',box);
+    let titleContainer = box.getElementsByClassName('titleContainer')[0];
+    createDesc(title,'',titleContainer);
+    createDesc(archDesc,'',box);
+}
+
+function reStart() {
+    document.body.removeChild(document.getElementById('endGame'));
+    state = 0;
+    otters = 0;
+    numberOfBtn = 1;
+    matchNumber = 0; 
+    newChild = 10;
+    child = 1;
+    breeder = 0;
+    newBreeder = 50;
+    hunters = 0;
+    removeHuner = 10;
+    time = 10;
+    firstHunt = true;
+    huntSeason = false;
+    highRisk = 30;
+    endgame = 30; 
+    death = 0;
+    upChild = false;
+    upBreeder = false;
+    upHunting = false;
+    cardNumber = 0;
+    overPopolation = 300;
+    overKill = 250;
+
+    firstDescription();
+}
+
 function final() {
-    document.body.style.height = '100vh';
+    
     let finalDiv = document.createElement('div');
     document.body.appendChild(finalDiv);
     finalDiv.id = "endGame";
@@ -269,10 +342,59 @@ function final() {
     for (let i = 0; i < finalParas.length; i++) {
         createDesc(finalParas[i],'par'+i,finalDiv);
     }
+    
+    createDiv('archContainer','',finalDiv);
+    if (death == 0) {
+        createAchievent(archievements[0],archDesc[0],archIds[0]);
+        let a = document.getElementById(archIds[0])
+        a.getElementsByClassName('titleContainer')[0].style.backgroundColor = '#fcba03';
+    }
+    if (death > overKill) {
+        createAchievent(archievements[1],archDesc[1],archIds[1]);
+        let a = document.getElementById(archIds[1])
+        a.getElementsByClassName('titleContainer')[0].style.backgroundColor = '#ff6038';
+    }
+    if (otters == 0) {
+        createAchievent(archievements[2],archDesc[2],archIds[2]);
+        let a = document.getElementById(archIds[2])
+        a.getElementsByClassName('titleContainer')[0].style.backgroundColor = '#30db94';
+    }
+    if (otters > overPopolation) {
+        createAchievent(archievements[3],archDesc[3],archIds[3]);
+        let a = document.getElementById(archIds[3])
+        a.getElementsByClassName('titleContainer')[0].style.backgroundColor = '#4ad5ff';
+    }
+    if (!huntSeason && otters > 0) {
+        createAchievent(archievements[4],archDesc[4],archIds[4]);
+        let a = document.getElementById(archIds[4])
+        a.getElementsByClassName('titleContainer')[0].style.backgroundColor = '#f3a8ff';
+    }
+    if (breeder == 0 && child == 1 && hunters == 1 && otters > 0) {
+        createAchievent(archievements[5],archDesc[5],archIds[5]);
+        let a = document.getElementById(archIds[5])
+        a.getElementsByClassName('titleContainer')[0].style.backgroundColor = '#ffd6a8';
+    }
+    if (breeder == 0 && child == 1 && hunters == 1 && otters > 0) {
+        createAchievent(archievements[5],archDesc[5],archIds[5]);
+        let a = document.getElementById(archIds[5])
+        a.getElementsByClassName('titleContainer')[0].style.backgroundColor = '#c5e82a';
+    }
+    if (otters > 0 && death > otters) {
+        createAchievent(archievements[6],archDesc[6],archIds[6]);
+        let a = document.getElementById(archIds[6])
+        a.getElementsByClassName('titleContainer')[0].style.backgroundColor = '#dcabff';
+    }
+
     createDesc(info[ Math.floor(Math.random() * info.length)],'info',finalDiv);
     let par = document.getElementsByTagName('p');
     par[0].style.fontWeight = '900';
     par[0].style.fontSize = '4rem';
+
+    createBtn('Riprova','retry',finalDiv);
+    let btnRetry = document.getElementById('retry');
+    btnRetry.addEventListener('click',reStart)
+    
+
 }
 
 function demon() {
