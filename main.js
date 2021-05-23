@@ -39,9 +39,9 @@ let archievements = [
 ]
 
 let explenation = [
-    'stai per provare un mini-gioco in cui l\'obiettivo sarà quello di accrescere il numero di lontntre. Inizierai trovandoti un numero pari a 0 e due bottoni: il primo aumenta il numero di lontre mentre il secondo... bè il secondo le \"toglie di mezzo\" diciamo.',
+    'stai per provare un mini-gioco in cui l\'obiettivo sarà quello di accrescere il numero di lontre. Inizierai trovandoti un numero pari a 0 e due bottoni: il primo aumenta il numero di lontre mentre il secondo... bè il secondo le \"toglie di mezzo\" diciamo.',
     'Andando avanti, se riuscirai ad aumentarne il numero, compariranno alcuni aiuti che ti porteranno più vicino al tuo obiettivo. Ma fai attenzione! Non tutti a questo mondo vogliono salvaguardare le lontre... ',
-    'Ad Ogni modo... perchè le lontre? Bè di sicuro perchè sono degli animali bellissimi e coccolosissimi (parole della mia amica ',
+    'Ad ogni modo... perchè le lontre? Bè di sicuro perchè sono degli animali bellissimi e coccolosissimi (parole della mia amica ',
     'Ho aggiunto anche alcuni obiettivi da raggiungere... ' + archievements[0]+ ', ' + archievements[1]+ ', ' + archievements[2]+ ', ' + archievements[3]+  ', ' + archievements[4]+  ', ' + archievements[5]+  ', ' + archievements[6],
     'Ma ora basta leggere... Cominciamo!',
 ]
@@ -373,11 +373,6 @@ function final() {
         createAchievent(archievements[5],archDesc[5],archIds[5]);
         let a = document.getElementById(archIds[5])
         a.getElementsByClassName('titleContainer')[0].style.backgroundColor = '#ffd6a8';
-    }
-    if (breeder == 0 && child == 1 && hunters == 1 && otters > 0) {
-        createAchievent(archievements[5],archDesc[5],archIds[5]);
-        let a = document.getElementById(archIds[5])
-        a.getElementsByClassName('titleContainer')[0].style.backgroundColor = '#c5e82a';
     }
     if (otters > 0 && death > otters) {
         createAchievent(archievements[6],archDesc[6],archIds[6]);
