@@ -1,8 +1,9 @@
 // INIT //
 
 // variables
+
 let state = 0;
-let containers = 3;
+let otters = 0;
 let numberOfBtn = 1;
 let matchNumber = 0; 
 let newChild = 10;
@@ -15,21 +16,57 @@ let time = 10;
 let firstHunt = true;
 let huntSeason = false;
 let highRisk = 30;
-let endgame = 0;
-let finalHottters = 0;
+let endgame = 20;
 let death = 0;
+let upChild = false;
+let upBreeder = false;
+let upHunting = false;
+let cardNumber = 0;
+let friend = '@Selly';
+let instaAri = friend.link('https://www.instagram.com/arinpuglia/');
 
 // arrays
+let explenation = [
+    'stai per provare un mini-gioco in cui l\'obiettivo sarà quello di accrescere il numero di lontntre. Inizierai trovandoti un numero pari a 0 e due bottoni: il primo aumenta il numero di lontre mentre il secondo... bè il secondo le \"toglie di mezzo\" diciamo.',
+    'Andando avanti, se riuscirai ad aumentarne il numero, compariranno alcuni aiuti che ti porteranno più vicino al tuo obiettivo. Ma fai attenzione! Non tutti a questo mondo vogliono salvaguardare le lontre... ',
+    'Ad Ogni modo... perchè le lontre? Bè di sicuro perchè sono degli animali bellissimi e coccolosissimi (parole della mia amica ',
+    'Ma ora basta leggere... Cominciamo!',
+]
+
+let gameParts = [
+    'numContainer',
+    'txtContainer',
+    'btnContainer'
+]
+
 let cards = [
     'aumenta la prole',
     'allevatore',
     'caccia proibita'
 ]
 
+let idCards = [
+    'id0',
+    'id1',
+    'id2'
+]
+
+let idButtons = [
+    'btn0',
+    'btn1',
+    'btn2'
+]
+
 let cardsDesc = [
     'Aumenta il numero di piccoli ad ogni accoppiamento',
     'Un aiuto per aiutarti ad auitarti nel tuo gravoso compito',
     'Emetti un divieto di caccia'
+]
+
+let cardInfo = [
+    'cucciolata di ' + child + ' lontre',
+    'allevatori: ' + breeder,
+    'cacciatori: ' + hunters,
 ]
 
 let sentences = [
@@ -39,130 +76,163 @@ let sentences = [
     'siamo arrivati all\'equivalente della popolazione italiana... e continuano ad aumentare! GRANDE!'
 ]
 
+firstDescription();
 
-// create a page division
-for (let i = 0; i < containers; i++) {
-    let paragraph = document.createElement('div');
-    document.body.appendChild(paragraph);
-    paragraph.classList.add("para");
+function firstDescription() {
+    createDesc('OTTER GAME', 'title', document.body);
+    for (let i = 0; i < explenation.length; i++) {
+        createDiv('','box_rules',document.body);
+        let pos = document.getElementsByClassName('box_rules')[i];
+        createDesc(explenation[i],'p'+i,pos);
+    }
+    document.getElementById('p2').innerHTML += instaAri + ') in più sono una specie a rischio (fortunatamente non altissimo... per ora) e in forte competizione con l\'essere umano per quanto riguarda cibo e habitat. Spero che in primo luogo questo giochino ti possa far sorridere e, tra un click e l\'altro, ti possa far scoprire qualcosa in più su questo splendido animaletto.';
+    createBtn('start','start',document.body);
+    document.getElementById('start').addEventListener('click',startGame);
+    createDiv('otter_img','',document.body);
 }
 
-let numContainer = document.getElementsByClassName('para')[0];
-let txtContainer = document.getElementsByClassName('para')[1];
-let btnContainer = document.getElementsByClassName('para')[2];
+function startGame() {
+    state = 1;
+    // delete first page
+    for (let i = 0; i < explenation.length; i++) {
+        let a = document.getElementsByClassName('box_rules')[0];
+        document.body.removeChild(a);
+    }
+    let b = document.getElementById('start');
+    document.body.removeChild(b);
+    let c = document.getElementById('title');
+    let d = document.getElementById('otter_img');
+    document.body.removeChild(c);
+    document.body.removeChild(d);
 
-btnContainer.setAttribute('id','btnContainer');
-// create upgrades cards
-for (let i = 0; i < cards.length; i++) {
-    let card = document.createElement('div');
-    btnContainer.appendChild(card);
-    card.classList.add("card");
-    createBtn(cards[i],card);
-    createDesc(cardsDesc[i],cards[i],card);
-    document.getElementById(cards[i]).disabled = true;
+    // create game page
+    for (let i = 0; i < gameParts.length; i++) {
+        createDiv(gameParts[i],'para',document.body);
+    }
+
+    let pos = document.getElementsByClassName('para');
+    
+    // part 1 number and buttons + and -
+    createDiv('fixContainer','',pos[0]);
+    let fixBox  = document.getElementById('fixContainer');
+    createDiv('buttonsContainer','',fixBox);
+
+    let btnPos = document.getElementById('buttonsContainer');
+
+    createBtn('+','plus',btnPos);
+    createBtn('-','minus',btnPos);
+    createDesc(otters,'number',fixBox);
+    
+    let plus = document.getElementById('plus');
+    let minus = document.getElementById('minus');
+
+    plus.addEventListener('click',add,false);
+    minus.addEventListener('click',remove,false);
+    
+    // part 2 text messages
+    createDesc(sentences[0],'',pos[1]);
 }
 
-const simpleBtnContainer = document.createElement('div');
-numContainer.appendChild(simpleBtnContainer);
-simpleBtnContainer.classList.add("btnContainer");
-
-// button +
-const btn1 = document.createElement('button');
-const plus = document.createTextNode('+');
-simpleBtnContainer.appendChild(btn1);
-btn1.appendChild(plus);
-
-// button -
-const btn2 = document.createElement('button');
-const minus = document.createTextNode('-');
-simpleBtnContainer.appendChild(btn2);
-btn2.appendChild(minus);
-
-// number
-const paragraph = document.createElement('p');
-const number = document.createTextNode(0);
-numContainer.appendChild(paragraph);
-paragraph.appendChild(number);
-paragraph.classList.add("number");
-
-// text
-const textEl = document.createElement('p');
-const text = document.createTextNode(sentences[0]);
-txtContainer.appendChild(textEl);
-textEl.appendChild(text);
-
-// buttons action
-btn1.addEventListener('click',add);
-btn2.addEventListener('click',remove);
-
-
-// FUNCTIONS //
-
-// for creation
-function createBtn(name,position) {
+function createBtn(name,id,position) {
     let btn = document.createElement('button');
-    position.appendChild(btn);
+    position.appendChild(btn); 
     btn.appendChild(document.createTextNode(name));
-    btn.setAttribute('id',name);
+    if (id != '') {
+        btn.setAttribute('id',id); 
+    }
 }
 
 function createDesc(description,id,position) {
     let p = document.createElement('p');
-    position.appendChild(p);
-    p.appendChild(document.createTextNode(description));
-    p.setAttribute('id',id);
+        position.appendChild(p);
+        p.appendChild(document.createTextNode(description));
+    if (id != '') {
+        p.setAttribute('id',id);  
+    }
 }
 
-// buttons
+function createDiv(name_box,class_box,position) {
+    let box = document.createElement('div');
+    if (name_box != '') {
+        box.id = name_box;  
+    }
+    if (class_box != '') {
+        box.classList.add(class_box);
+    }
+    position.appendChild(box);
+}
+
+function createCard(nameBtn,idCard,idButton,desc) {
+    let pos = document.getElementById('btnContainer');
+    let card = document.createElement('div');
+    pos.appendChild(card);
+    card.classList.add("card");
+    card.id = idCard;
+
+    createBtn(nameBtn,idButton,card);
+    createDesc(desc,'',card);
+}
+
 function add() {
-    number.textContent = Number(number.textContent) + child;
+    otters = otters + child;
+    document.getElementById('number').innerHTML = otters; 
 }
 
 function remove() {
-    if (number.textContent > 0) {
-        number.textContent--;
+    if (otters > 0) {
+        otters--;
         death++;
-    } 
+        document.getElementById('number').innerHTML = otters;
+    }  
 }
 
 function moreChild() {
+    upChild = false;
     child++;
-    document.getElementById(cards[0]).disabled = true;
-    newChild = newChild * 10;
+    newChild = newChild * 5;
+    let container = document.getElementById('btnContainer');
+    let card = document.getElementById(idCards[0]);
+    container.removeChild(card);
 }
 
 function addBreeder() {
-    breeder--;
-    document.getElementById(cards[1]).disabled = true;
+    upBreeder = false;
+    breeder++;
     newBreeder = newBreeder * 8;
+    let container = document.getElementById('btnContainer');
+    let card = document.getElementById(idCards[1]);
+    container.removeChild(card);
 }
 
 function breeding() {
-    number.textContent = Number(number.textContent) - breeder * 4;
+    otters = otters + breeder * 4;
+    document.getElementById('number').innerHTML = otters;
 }
 
 function hunting() {
-    if (number.textContent > hunters * 10) {
+    if (otters > hunters * 10) {
         death = death + hunters * 10; 
-    } else if (number.textContent > 0) {
-        death = death + Number(number.textContent);
-        console.log(death); 
+    } else if (otters > 0) {
+        death = death + otters;
     }
-    number.textContent = Number(number.textContent) - hunters * 10;
+    otters = otters - hunters * 10;
 }
 
 function noHunting() {
     huntSeason = false;
+    upHunting = false;
     time = 60;
     hunters = 0;
+    let container = document.getElementById('btnContainer');
+    let card = document.getElementById(idCards[2]);
+    container.removeChild(card);
 }
 
 function hunterCounter() {
     if (time > 0) {
         time--;
-        if (firstHunt == false) {
-            document.getElementById(cards[2]).disabled = true;  
-            document.getElementById('huntDesc').textContent = 'divieto di caccia';
+        if (firstHunt == false) { 
+            document.getElementById('huntDesc').innerHTML = 'divieto di caccia';
             document.getElementById('huntDesc').style.color = 'green';
         }
 
@@ -171,10 +241,10 @@ function hunterCounter() {
         hunters = 1;
         if (firstHunt == true) {
             firstHunt = false;
-            createDesc('I cacciatori sono entrati in azione','huntDesc',txtContainer);
+            createDesc('I cacciatori sono entrati in azione','huntDesc',document.getElementById('txtContainer'));
             document.getElementById('huntDesc').style.color = 'red';
         } else {
-            document.getElementById('huntDesc').textContent = 'I cacciatori sono entrati in azione';
+            document.getElementById('huntDesc').innerHTML = 'I cacciatori sono entrati in azione';
             document.getElementById('huntDesc').style.color = 'red';
         }
         
@@ -182,90 +252,83 @@ function hunterCounter() {
 }
 
 function final() {
+    document.body.style.height = '100vh';
     let finalDiv = document.createElement('div');
     document.body.appendChild(finalDiv);
-    finalDiv.setAttribute('id','endGame');
-
+    finalDiv.id = "endGame";
     let finalParas = [
         'GAME OVER',
-        'Al mondo ora si trovano '  + finalHottters + ' lontre',
+        'Al mondo ora si trovano '  + otters + ' lontre',
         'Sono morte ' + death + ' lontre'
     ]
-
     let info = [
-        '\"È una specie con areale eurasiatico (dalla penisola iberica sino al Giappone) e nordafricano (Marocco, Tunisia e Algeria). L\'attuale distribuzione in Europa è molto frammentaria e in diversi paesi (ad esempio Paesi Bassi, Liechtenstein, Svizzera) è ormai estinta mentre in altri (Italia, Francia, Belgio, Germania) è presente con popolazioni residue poco numerose e isolate. È in aumento in Svezia.\"',
+        '\"La lontra è una specie con areale eurasiatico (dalla penisola iberica sino al Giappone) e nordafricano (Marocco, Tunisia e Algeria). L\'attuale distribuzione in Europa è molto frammentaria e in diversi paesi (ad esempio Paesi Bassi, Liechtenstein, Svizzera) è ormai estinta mentre in altri (Italia, Francia, Belgio, Germania) è presente con popolazioni residue poco numerose e isolate. È in aumento in Svezia.\"',
         '\"La lontra vive solo in zone non antropizzate ed è molto sensibile all\'inquinamento. Inoltre è un\'ottima pescatrice che è entrata in competizione con l\'essere umano: questo significa che negli ultimi 2-3 secoli la convivenza non è stata per nulla facile, a discapito della lontra, che è stata molto cacciata durante il XX secolo anche per la sua pelliccia, usata per l\'abbigliamento femminile.\"',
         '\"In Italia nel 2009 è stato redatto un piano d\'azione Nazionale dal ministero dell\'ambiente per la conservazione della lontra. Due sono gli obiettivi: intende promuovere la conservazione di una specie - la lontra eurasiatica (Lutra lutra, L. 1758) -, a forte rischio di estinzione nel nostro Paese. Il secondo affronta il più vasto tema della conservazione di uno degli ecosistemi più minacciati in Europa, considerato che la lontra è considerata sia specie indicatrice della qualità ambientale degli ecosistemi d’acqua dolce, sia specie ombrello, la cui protezione favorisce cioè quella di altre specie che utilizzano gli habitat acquatici e ripariali\"'
     ]
-
     for (let i = 0; i < finalParas.length; i++) {
         createDesc(finalParas[i],'par'+i,finalDiv);
     }
-    
     createDesc(info[ Math.floor(Math.random() * info.length)],'info',finalDiv);
-
     let par = document.getElementsByTagName('p');
     par[0].style.fontWeight = '900';
     par[0].style.fontSize = '4rem';
-
 }
 
 function demon() {
-    if (number.textContent == 0) {
-        text.textContent = sentences[0];
-    } else if (number.textContent >= 1 && number.textContent < 100) {
-        text.textContent = sentences[1];
-    } else if (number.textContent >= 100 && number.textContent < 600) {
-        text.textContent = sentences[2];
-    } else if (number.textContent >= 600 && number.textContent < 1200) {
-        text.textContent = sentences[3];
+    if (otters == 0) {
+        document.getElementById('txtContainer').getElementsByTagName('p')[0].innerHTML = sentences[0];
+    } else if (otters >= 1 && otters < 100) {
+        document.getElementById('txtContainer').getElementsByTagName('p')[0].innerHTML = sentences[1];
+    } else if (otters >= 100 && otters < 600) {
+        document.getElementById('txtContainer').getElementsByTagName('p')[0].innerHTML = sentences[2];
+    } else if (otters >= 600 && otters < 1200) {
+        document.getElementById('txtContainer').getElementsByTagName('p')[0].innerHTML = sentences[3];
     }
-
-    if (number.textContent > newChild) {
-        let btn = document.getElementById(cards[0]);
-        btn.disabled = false;
+   
+    if (otters > newChild && upChild == false) {
+        upChild = true;
+        createCard(cards[0],idCards[0],idButtons[0],cardsDesc[0]);
+        let btn = document.getElementById(idButtons[0]);
         btn.addEventListener('click',moreChild);
     }
-
-    if (number.textContent > newBreeder) {
-        let btn = document.getElementById(cards[1]);
-        btn.disabled = false;
+    
+    if (otters > newBreeder && upBreeder == false) {
+        upBreeder = true;
+        createCard(cards[1],idCards[1],idButtons[1],cardsDesc[1]);
+        let btn = document.getElementById(idButtons[1]);
         btn.addEventListener('click',addBreeder);
     }
-
-    if (number.textContent < highRisk && huntSeason == true) {
-        let btn = document.getElementById(cards[2]);
-        btn.disabled = false;
+    
+    if (otters < highRisk && huntSeason == true && upHunting == false) {
+        upHunting = true;
+        createCard(cards[2],idCards[2],idButtons[2],cardsDesc[2]);
+        let btn = document.getElementById(idButtons[2]);
         btn.addEventListener('click',noHunting);
     }
 
     if (endgame > 0) {
         endgame--;
     } else {
-        state = 1;
-        finalHottters = Number(number.textContent);
-        document.body.removeChild(numContainer);
-        document.body.removeChild(txtContainer);
-        document.body.removeChild(btnContainer);
+        state = 2;
+        document.body.removeChild(document.getElementById('numContainer'));
+        document.body.removeChild(document.getElementById('txtContainer'));
+        document.body.removeChild(document.getElementById('btnContainer'));
 
-        final();
+        final();  
     }
 }
 
 window.setInterval(function() {
-    if (state == 0){
+    if (state == 1){
         breeding();
         hunterCounter();
-        if (number.textContent > 0) {
+        if (otters > 0) {
             hunting();   
         } 
-        
-        if (number.textContent < 0) {
-           number.textContent = 0;
-           
-       }
-       demon();
+        if (otters < 0) {
+            otters = 0;   
+        }
+        demon();
     }
-
 }, 1000)
-
