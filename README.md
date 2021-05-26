@@ -4,11 +4,11 @@ A simple counter game with javascript
 
 ## Description
 
-This is a little game for my second project at the Start2imcact platform. The theme was to create a javascript counter with two buttons: + and -. But you know... why not to create a simple game to challenging myself? So i made it.
+This is a little game for my second project at the Start2imcact platform. The theme was to create a javascript counter with two buttons: + and -. But you know... why not to create a simple game to challenging myself? So I made it.
 
 ## Getting Started
 
-you want to try it? go to http://guidoghezzi.altervista.org/otter_game/index.html. Simple.
+You want to try it? Go to [Otter game](http://guidoghezzi.altervista.org/otter_game/index.html) page.
 
 ### Dependencies
 
@@ -20,20 +20,8 @@ you want to try it? go to http://guidoghezzi.altervista.org/otter_game/index.htm
 
 ### Executing program
 
-- open the index.html with the browser or go to the page http://guidoghezzi.altervista.org/otter_game/index.html
+- open the index.html with any browser or go to the page [Otter game](http://guidoghezzi.altervista.org/otter_game/index.html).
 
 ## Authors
 
 [@ghezzizzo](https://twitter.com/GGhezzi95)
-
-## Version History
-
-- 0.2
-  - Various bug fixes and optimizations
-  - See [commit change]() or See [release history]()
-- 0.1
-  - Initial Release
-
-## License
-
-This project is licensed under the [Ghezzizzo] License - see the LICENSE.md file for details

@@ -39,7 +39,7 @@ let archievements = [
 ]
 
 let explenation = [
-    'stai per provare un mini-gioco in cui l\'obiettivo sarà quello di accrescere il numero di lontre. Inizierai trovandoti un numero pari a 0 e due bottoni: il primo aumenta il numero di lontre mentre il secondo... bè il secondo le \"toglie di mezzo\" diciamo.',
+    'stai per provare un mini-gioco, della durata di 30 secondi, in cui l\'obiettivo sarà quello di accrescere il numero di lontre. Inizierai trovandoti un numero pari a 0 e due bottoni: il primo aumenta il numero di lontre mentre il secondo... bè il secondo le \"toglie di mezzo\" diciamo.',
     'Andando avanti, se riuscirai ad aumentarne il numero, compariranno alcuni aiuti che ti porteranno più vicino al tuo obiettivo. Ma fai attenzione! Non tutti a questo mondo vogliono salvaguardare le lontre... ',
     'Ad ogni modo... perchè le lontre? Bè di sicuro perchè sono degli animali bellissimi e coccolosissimi (parole della mia amica ',
     'Ho aggiunto anche alcuni obiettivi da raggiungere... ' + archievements[0]+ ', ' + archievements[1]+ ', ' + archievements[2]+ ', ' + archievements[3]+  ', ' + archievements[4]+  ', ' + archievements[5]+  ', ' + archievements[6],
