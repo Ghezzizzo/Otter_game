@@ -78,7 +78,6 @@ body {
   padding-bottom: 20px;
 }
 
-.btnContainer,
 #buttonsContainer {
   width: 100%;
   display: flex;
@@ -94,7 +93,6 @@ body {
   text-align: center;
 }
 
-.btnContainer button,
 #buttonsContainer button {
   font-size: 2rem;
 }
@@ -112,7 +110,6 @@ button:disabled {
   background-color: white;
 }
 
-.number,
 #number {
   font-weight: 300;
   font-size: 10rem;
